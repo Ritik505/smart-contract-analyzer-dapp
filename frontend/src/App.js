@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -45,7 +45,7 @@ function App() {
   const [account, setAccount] = useState(null);
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
-  const [hasPaid, setHasPaid] = useState(false);
+
   const [sessionPaid, setSessionPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [analysisMode, setAnalysisMode] = useState('code'); 
