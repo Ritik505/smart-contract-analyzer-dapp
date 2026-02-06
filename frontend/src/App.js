@@ -18,6 +18,9 @@ import {
 } from 'react-icons/fa';
 
 import './App.css';
+const API_BASE_URL = process.env.REACT_APP_API_URL || "";
+
+
 
 const CONTRACT_ADDRESS = '0x2C2977812AAb1F20cB8F53a8EB4D34140ddb534d';
 const CONTRACT_ABI = [
@@ -167,16 +170,19 @@ function App() {
       
       let response;
       if (analysisMode === 'code') {
-        response = await axios.post('/api/analyze', {
+        response = await axios.post(`${API_BASE_URL}/api/analyze`, {
+
           sourceCode: sourceCode.trim(),
           useOpenAI: true
         });
-      } else {
-        response = await axios.post('/api/analyze-address', {
-          contractAddress: contractAddress.trim(),
-          useOpenAI: true
-        });
-      }
+
+        } else {
+  response = await axios.post(`${API_BASE_URL}/api/analyze-address`, {
+    contractAddress: contractAddress.trim(),
+    useOpenAI: true
+  });
+}
+
 
       setAnalysis(response.data.analysis);
       toast.success('Analysis completed successfully!');
@@ -199,7 +205,8 @@ function App() {
     try {
       setIsLoading(true);
       
-      const response = await axios.post('/api/generate-pdf', {
+      const response = await axios.post(`${API_BASE_URL}/api/generate-pdf`, {
+
         analysis,
         contractAddress: analysisMode === 'address' ? contractAddress : null,
         sourceCode: analysisMode === 'code' ? sourceCode : null
