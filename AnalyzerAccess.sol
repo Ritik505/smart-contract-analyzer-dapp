@@ -3,7 +3,7 @@ pragma solidity ^0.8.18;
 
 contract AnalyzerAccess {
     address public owner;
-    uint256 public constant FEE = 0.1 ether; // 0.1 AVAX (1 AVAX = 1 ether on Avalanche C-Chain)
+    uint256 public constant FEE = 0.1 ether;
 
     event Paid(address indexed user, uint256 amount);
 
