@@ -1,6 +1,7 @@
 const { exec } = require('child_process');
 const fs = require('fs-extra');
 const path = require('path');
+const os = require('os');
 const solc = require('solc');
 const OpenAI = require('openai');
 
@@ -10,7 +11,12 @@ const openai = process.env.OPENAI_API_KEY ? new OpenAI({
 
 class ContractAnalyzer {
   constructor() {
-    this.tempDir = path.join(__dirname, '../temp');
+    if (process.env.VERCEL) {
+      this.tempDir = os.tmpdir();
+    } else {
+      this.tempDir = path.join(__dirname, '../temp');
+    }
+
     this.ensureTempDir();
   }
 
@@ -22,7 +28,10 @@ class ContractAnalyzer {
     try {
       console.log('Starting comprehensive contract analysis...');
       
-      const contractFile = path.join(this.tempDir, 'contract.sol');
+      const contractFile = path.join(
+        this.tempDir,
+        `contract-${Date.now()}.sol`
+      );
       await fs.writeFile(contractFile, sourceCode);
 
       const [slitherResults, solhintResults, contractDetails] = await Promise.all([
@@ -744,4 +753,4 @@ module.exports = {
     const analyzer = new ContractAnalyzer();
     return await analyzer.analyzeContract(sourceCode, useOpenAI);
   }
-}; 
+};
